@@ -12,6 +12,7 @@ import { Inter } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { QueryProvider } from "@/components/data/query-provider";
 import { ErrorBoundary } from "@/components/data/error-boundary";
+import { Toaster } from "@/components/ui/toaster";
 import "./globals.css";
 
 /**
@@ -99,6 +100,7 @@ export default function RootLayout({
             <ErrorBoundary>
               {children}
             </ErrorBoundary>
+            <Toaster />
           </QueryProvider>
         </ThemeProvider>
       </body>
