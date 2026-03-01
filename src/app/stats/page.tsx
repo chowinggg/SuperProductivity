@@ -4,7 +4,6 @@
  * ============================================
  */
 
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { MainLayout, PageHeader, PageCard } from "@/components/layout/main-layout";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
@@ -15,7 +14,6 @@ import {
   OKRProgressChart 
 } from "@/components/charts/stats-chart";
 import { ActivityHeatmap } from "@/components/charts/activity-heatmap";
-import { DashboardSkeleton } from "@/components/data/loading";
 import { 
   Target, 
   ListTodo, 

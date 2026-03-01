@@ -4,12 +4,10 @@
  * ============================================
  */
 
-import { Suspense } from "react";
 import type { Metadata } from "next";
 import { MainLayout, PageHeader, PageCard } from "@/components/layout/main-layout";
 import { TaskList } from "@/components/gtd/task-list";
 import { WeeklyTrendChart } from "@/components/charts/stats-chart";
-import { DashboardSkeleton } from "@/components/data/loading";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { CalendarSync } from "@/components/gtd/calendar-sync";
 import { Inbox, CheckCircle2, Clock, Calendar, Archive } from "lucide-react";
