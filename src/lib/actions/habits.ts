@@ -28,7 +28,7 @@ export async function createHabit(input: CreateHabitInput) {
   
   const { data, error } = await supabase
     .from("habits")
-    .insert(input)
+    .insert(input as never)
     .select()
     .single();
 
@@ -48,7 +48,7 @@ export async function updateHabit(id: string, input: UpdateHabitInput) {
   
   const { data, error } = await supabase
     .from("habits")
-    .update(input)
+    .update(input as never)
     .eq("id", id)
     .select()
     .single();
@@ -70,7 +70,7 @@ export async function deleteHabit(id: string) {
   
   const { error } = await supabase
     .from("habits")
-    .update({ deleted_at: new Date().toISOString() })
+    .update({ deleted_at: new Date().toISOString() } as never)
     .eq("id", id);
 
   if (error) {
@@ -89,7 +89,7 @@ export async function toggleHabitActive(id: string, isActive: boolean) {
   
   const { data, error } = await supabase
     .from("habits")
-    .update({ is_active: isActive })
+    .update({ is_active: isActive } as never)
     .eq("id", id)
     .select()
     .single();
@@ -129,9 +129,9 @@ export async function toggleHabitLog(
         is_completed: completed,
         completed_at: completed ? new Date().toISOString() : null,
         count: completed ? 1 : 0,
-        note: note || existingLog.note,
-      })
-      .eq("id", existingLog.id)
+        note: note || (existingLog as HabitLog).note,
+      } as never)
+      .eq("id", (existingLog as HabitLog).id)
       .select()
       .single();
 
@@ -152,7 +152,7 @@ export async function toggleHabitLog(
         completed_at: completed ? new Date().toISOString() : null,
         count: completed ? 1 : 0,
         note: note || null,
-      })
+      } as never)
       .select()
       .single();
 
@@ -193,10 +193,15 @@ export async function getHabits(options?: { isActive?: boolean }) {
   return data || [];
 }
 
+/** 习惯及其今日打卡记录 */
+export interface HabitWithTodayLog extends Habit {
+  todayLog: HabitLog | null;
+}
+
 /**
  * 获取今日习惯（包含打卡状态）
  */
-export async function getTodayHabits() {
+export async function getTodayHabits(): Promise<HabitWithTodayLog[]> {
   const supabase = await createClient();
   const today = format(new Date(), "yyyy-MM-dd");
 
@@ -225,7 +230,7 @@ export async function getTodayHabits() {
   // 合并数据
   const habitsWithTodayLog = (habits as Habit[]).map((habit) => ({
     ...habit,
-    todayLog: todayLogs?.find((log) => log.habit_id === habit.id) || null,
+    todayLog: (todayLogs as HabitLog[] | null)?.find((log) => log.habit_id === habit.id) || null,
   }));
 
   return habitsWithTodayLog;
@@ -276,7 +281,7 @@ export async function batchCreateHabitLogs(
   
   const { data, error } = await supabase
     .from("habit_logs")
-    .upsert(logs, { onConflict: "habit_id,log_date" })
+    .upsert(logs as never, { onConflict: "habit_id,log_date" })
     .select();
 
   if (error) {

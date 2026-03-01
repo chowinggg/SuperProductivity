@@ -12,7 +12,6 @@ import { OKRProgressChart } from "@/components/charts/stats-chart";
 import { DashboardSkeleton } from "@/components/data/loading";
 import { getObjectives } from "@/lib/actions/objectives";
 import { getCurrentQuarter } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { AlertCircle } from "lucide-react";
 
 export const metadata: Metadata = {

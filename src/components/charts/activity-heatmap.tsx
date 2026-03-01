@@ -16,7 +16,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
-import { format, subDays, startOfWeek, addDays, isSameDay } from "date-fns";
+import { format, subDays, startOfWeek, addDays } from "date-fns";
 import { zhCN } from "date-fns/locale";
 
 interface ActivityHeatmapProps {

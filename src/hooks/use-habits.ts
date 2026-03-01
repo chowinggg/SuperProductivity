@@ -20,7 +20,12 @@ import type {
   CreateHabitLogInput,
   HabitStats,
 } from "@/types/supabase";
-import { format, parseISO, startOfDay, endOfDay, subDays, isSameDay } from "date-fns";
+import { format, subDays } from "date-fns";
+
+/** 习惯及其今日打卡记录 */
+export interface HabitWithTodayLog extends Habit {
+  todayLog: HabitLog | null;
+}
 
 // ============================================
 // 查询 Hooks
@@ -98,7 +103,7 @@ export function useHabit(id: string | null) {
 export function useTodayHabits() {
   const today = format(new Date(), "yyyy-MM-dd");
 
-  return useQuery({
+  return useQuery<HabitWithTodayLog[]>({
     queryKey: queryKeys.habits.today(),
     queryFn: async () => {
       // 获取所有活跃习惯
@@ -130,7 +135,7 @@ export function useTodayHabits() {
       const habitsWithTodayLog = (habits as (Habit & { habit_logs: HabitLog[] })[]).map(
         (habit) => ({
           ...habit,
-          todayLog: todayLogs?.find((log) => log.habit_id === habit.id) || null,
+          todayLog: (todayLogs as HabitLog[] | null)?.find((log) => log.habit_id === habit.id) || null,
         })
       );
 
@@ -221,7 +226,7 @@ export function useHabitStats(habitId: string | null) {
 
       for (let i = 0; i < totalDays; i++) {
         const checkDate = format(subDays(new Date(), i), "yyyy-MM-dd");
-        const hasLog = logs?.some((log) => log.log_date === checkDate);
+        const hasLog = (logs as HabitLog[] | null)?.some((log) => log.log_date === checkDate);
 
         if (hasLog) {
           tempStreak++;
@@ -267,7 +272,7 @@ export function useCreateHabit() {
     mutationFn: async (input: CreateHabitInput) => {
       const { data, error } = await supabase
         .from("habits")
-        .insert(input)
+        .insert(input as never)
         .select()
         .single();
 
@@ -299,7 +304,7 @@ export function useUpdateHabit() {
     }) => {
       const { data, error } = await supabase
         .from("habits")
-        .update(input)
+        .update(input as never)
         .eq("id", id)
         .select()
         .single();
@@ -327,7 +332,7 @@ export function useDeleteHabit() {
     mutationFn: async (id: string) => {
       const { error } = await supabase
         .from("habits")
-        .update({ deleted_at: new Date().toISOString() })
+        .update({ deleted_at: new Date().toISOString() } as never)
         .eq("id", id);
 
       if (error) {
@@ -382,9 +387,9 @@ export function useToggleHabitLog() {
             is_completed: completed,
             completed_at: completed ? new Date().toISOString() : null,
             count: completed ? 1 : 0,
-            note: note || existingLog.note,
-          })
-          .eq("id", existingLog.id)
+            note: note || (existingLog as HabitLog).note,
+          } as never)
+          .eq("id", (existingLog as HabitLog).id)
           .select()
           .single();
 
@@ -404,7 +409,7 @@ export function useToggleHabitLog() {
             completed_at: completed ? new Date().toISOString() : null,
             count: completed ? 1 : 0,
             note: note || null,
-          })
+          } as never)
           .select()
           .single();
 
@@ -444,7 +449,7 @@ export function useToggleHabitLog() {
 
       return { previousHabits };
     },
-    onError: (err, variables, context) => {
+    onError: (_err, _variables, context) => {
       if (context?.previousHabits) {
         queryClient.setQueryData(queryKeys.habits.today(), context.previousHabits);
       }
@@ -470,7 +475,7 @@ export function useBatchCreateHabitLogs() {
     ) => {
       const { data, error } = await supabase
         .from("habit_logs")
-        .upsert(logs, { onConflict: "habit_id,log_date" })
+        .upsert(logs as never, { onConflict: "habit_id,log_date" })
         .select();
 
       if (error) {

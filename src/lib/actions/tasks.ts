@@ -22,7 +22,7 @@ export async function createTask(input: CreateTaskInput) {
   
   const { data, error } = await supabase
     .from("tasks")
-    .insert(input)
+    .insert(input as never)
     .select()
     .single();
 
@@ -42,7 +42,7 @@ export async function updateTask(id: string, input: UpdateTaskInput) {
   
   const { data, error } = await supabase
     .from("tasks")
-    .update(input)
+    .update(input as never)
     .eq("id", id)
     .select()
     .single();
@@ -64,7 +64,7 @@ export async function deleteTask(id: string) {
   
   const { error } = await supabase
     .from("tasks")
-    .update({ deleted_at: new Date().toISOString() })
+    .update({ deleted_at: new Date().toISOString() } as never)
     .eq("id", id);
 
   if (error) {
@@ -87,7 +87,7 @@ export async function toggleTaskComplete(id: string, completed: boolean) {
 
   const { data, error } = await supabase
     .from("tasks")
-    .update(updateData)
+    .update(updateData as never)
     .eq("id", id)
     .select()
     .single();
@@ -108,7 +108,7 @@ export async function updateTaskStatus(id: string, status: TaskStatus) {
   
   const { data, error } = await supabase
     .from("tasks")
-    .update({ status })
+    .update({ status } as never)
     .eq("id", id)
     .select()
     .single();
@@ -212,7 +212,7 @@ export async function reorderTasks(orderedIds: string[]) {
 
   const { error } = await supabase
     .from("tasks")
-    .upsert(updates);
+    .upsert(updates as never);
 
   if (error) {
     throw new Error(`更新排序失败: ${error.message}`);

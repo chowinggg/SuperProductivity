@@ -13,9 +13,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { FormItem } from "@/components/ui/form";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { supabase } from "@/lib/supabase/client";
-import { Target, Loader2 } from "lucide-react";
+import { Target } from "lucide-react";
 
 export default function LoginPage() {
   const router = useRouter();

@@ -11,10 +11,9 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { CircularProgress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import type { Habit, HabitLog } from "@/types/supabase";
-import { Check, Flame, Calendar, MoreHorizontal, Edit, Trash2 } from "lucide-react";
+import { Check, Flame, MoreHorizontal, Edit, Trash2 } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,

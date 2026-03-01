@@ -28,7 +28,6 @@ import {
   ArrowRight,
   Clock,
   Calendar,
-  AlertCircle,
 } from "lucide-react";
 
 interface TaskItemProps {

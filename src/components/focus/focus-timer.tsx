@@ -11,7 +11,6 @@
 import * as React from "react";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
-import { CircularProgress } from "@/components/ui/progress";
 import { Badge } from "@/components/ui/badge";
 import type { FocusSession, Task } from "@/types/supabase";
 import { Play, Pause, RotateCcw, Coffee, Brain, CheckCircle2 } from "lucide-react";
@@ -116,7 +115,6 @@ export function FocusTimer({
     setIsPaused(false);
   };
 
-  const Icon = config.icon;
 
   return (
     <div className={cn("flex flex-col items-center", className)}>

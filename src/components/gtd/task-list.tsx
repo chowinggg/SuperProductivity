@@ -13,7 +13,7 @@ import { TaskItem } from "./task-item";
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useTasks, useToggleTaskComplete, useDeleteTask } from "@/hooks/use-tasks";
-import type { Task, TaskStatus, TaskFilter } from "@/types/supabase";
+import type { Task, TaskFilter } from "@/types/supabase";
 import { Plus, Inbox } from "lucide-react";
 
 interface TaskListProps {

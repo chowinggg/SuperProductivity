@@ -92,7 +92,7 @@ export function SortableList<T extends { id: string }>({
   className,
   itemClassName,
 }: SortableListProps<T>) {
-  const [activeId, setActiveId] = React.useState<string | null>(null);
+  const [, setActiveId] = React.useState<string | null>(null);
 
   const sensors = useSensors(
     useSensor(PointerSensor, {

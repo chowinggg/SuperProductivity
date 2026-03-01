@@ -20,7 +20,6 @@ import {
   CalendarCheck, 
   Timer,
   BarChart3,
-  TrendingUp
 } from "lucide-react";
 
 export const metadata: Metadata = {

@@ -33,7 +33,7 @@ import { startOfDay, endOfDay, formatISO } from "date-fns";
  */
 export function useTasks(filter?: TaskFilter) {
   return useQuery({
-    queryKey: queryKeys.tasks.list(filter),
+    queryKey: queryKeys.tasks.list(filter as Record<string, unknown>),
     queryFn: async () => {
       let query = supabase
         .from("tasks")
@@ -205,7 +205,7 @@ export function useCreateTask() {
     mutationFn: async (input: CreateTaskInput) => {
       const { data, error } = await supabase
         .from("tasks")
-        .insert(input)
+        .insert(input as never)
         .select()
         .single();
 
@@ -247,7 +247,7 @@ export function useUpdateTask() {
     }) => {
       const { data, error } = await supabase
         .from("tasks")
-        .update(input)
+        .update(input as never)
         .eq("id", id)
         .select()
         .single();
@@ -272,12 +272,12 @@ export function useUpdateTask() {
 
       return { previousTask };
     },
-    onError: (err, { id }, context) => {
+    onError: (_err, { id }, context) => {
       if (context?.previousTask) {
         queryClient.setQueryData(queryKeys.tasks.detail(id), context.previousTask);
       }
     },
-    onSettled: (data, error, { id }) => {
+    onSettled: (_data, _error, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks.detail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks.all });
     },
@@ -300,7 +300,7 @@ export function useToggleTaskComplete() {
 
       const { data, error } = await supabase
         .from("tasks")
-        .update(updateData)
+        .update(updateData as never)
         .eq("id", id)
         .select()
         .single();
@@ -329,12 +329,12 @@ export function useToggleTaskComplete() {
 
       return { previousTask };
     },
-    onError: (err, { id }, context) => {
+    onError: (_err, { id }, context) => {
       if (context?.previousTask) {
         queryClient.setQueryData(queryKeys.tasks.detail(id), context.previousTask);
       }
     },
-    onSettled: (data, error, { id }) => {
+    onSettled: (_data, _error, { id }) => {
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks.detail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.tasks.all });
     },
@@ -353,7 +353,7 @@ export function useDeleteTask() {
     mutationFn: async (id: string) => {
       const { error } = await supabase
         .from("tasks")
-        .update({ deleted_at: new Date().toISOString() })
+        .update({ deleted_at: new Date().toISOString() } as never)
         .eq("id", id);
 
       if (error) {
@@ -374,7 +374,7 @@ export function useDeleteTask() {
 
       return { previousTasks };
     },
-    onError: (err, id, context) => {
+    onError: (_err, _id, context) => {
       if (context?.previousTasks) {
         queryClient.setQueryData(queryKeys.tasks.list(), context.previousTasks);
       }
@@ -399,7 +399,7 @@ export function useUpdateTaskStatus() {
     mutationFn: async ({ id, status }: { id: string; status: TaskStatus }) => {
       const { data, error } = await supabase
         .from("tasks")
-        .update({ status })
+        .update({ status } as never)
         .eq("id", id)
         .select()
         .single();

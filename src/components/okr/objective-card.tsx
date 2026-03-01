@@ -9,7 +9,6 @@
 "use client";
 
 import * as React from "react";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Progress } from "@/components/ui/progress";
@@ -155,7 +154,7 @@ export function ObjectiveCard({
                     </p>
                   </div>
                   {kr.is_completed && (
-                    <Badge variant="success" className="shrink-0">
+                    <Badge variant="habit" className="shrink-0">
                       完成
                     </Badge>
                   )}

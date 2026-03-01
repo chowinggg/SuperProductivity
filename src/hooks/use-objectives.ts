@@ -105,7 +105,7 @@ export function useCreateObjective() {
     mutationFn: async (input: CreateObjectiveInput) => {
       const { data, error } = await supabase
         .from("objectives")
-        .insert(input)
+        .insert(input as never)
         .select()
         .single();
 
@@ -142,7 +142,7 @@ export function useUpdateObjective() {
     }) => {
       const { data, error } = await supabase
         .from("objectives")
-        .update(input)
+        .update(input as never)
         .eq("id", id)
         .select()
         .single();
@@ -172,13 +172,13 @@ export function useUpdateObjective() {
 
       return { previousObjective };
     },
-    onError: (err, { id }, context) => {
+    onError: (_err, { id }, context) => {
       // 发生错误时回滚
       if (context?.previousObjective) {
         queryClient.setQueryData(queryKeys.objectives.detail(id), context.previousObjective);
       }
     },
-    onSettled: (data, error, { id }) => {
+    onSettled: (_data, _error, { id }) => {
       // 无论成功还是失败，都重新获取数据
       queryClient.invalidateQueries({ queryKey: queryKeys.objectives.detail(id) });
       queryClient.invalidateQueries({ queryKey: queryKeys.objectives.all });
@@ -198,7 +198,7 @@ export function useDeleteObjective() {
     mutationFn: async (id: string) => {
       const { error } = await supabase
         .from("objectives")
-        .update({ deleted_at: new Date().toISOString() })
+        .update({ deleted_at: new Date().toISOString() } as never)
         .eq("id", id);
 
       if (error) {
@@ -223,7 +223,7 @@ export function useDeleteObjective() {
 
       return { previousObjectives };
     },
-    onError: (err, id, context) => {
+    onError: (_err, _id, context) => {
       if (context?.previousObjectives) {
         queryClient.setQueryData(queryKeys.objectives.list(), context.previousObjectives);
       }
@@ -244,7 +244,7 @@ export function useArchiveObjective() {
     mutationFn: async ({ id, isArchived }: { id: string; isArchived: boolean }) => {
       const { data, error } = await supabase
         .from("objectives")
-        .update({ is_archived: isArchived })
+        .update({ is_archived: isArchived } as never)
         .eq("id", id)
         .select()
         .single();

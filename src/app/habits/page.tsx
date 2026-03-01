@@ -4,10 +4,12 @@
  * ============================================
  */
 
+import { Suspense } from "react";
 import type { Metadata } from "next";
 import { MainLayout, PageHeader, PageCard } from "@/components/layout/main-layout";
 import { HabitList } from "@/components/habits/habit-list";
 import { ActivityHeatmap } from "@/components/charts/activity-heatmap";
+import { DashboardSkeleton } from "@/components/data/loading";
 import { getTodayHabits } from "@/lib/actions/habits";
 import { format } from "date-fns";
 import { zhCN } from "date-fns/locale";

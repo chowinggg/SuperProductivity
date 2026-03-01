@@ -24,7 +24,7 @@ import { SimpleTooltip } from "@/components/ui/tooltip";
 import { MobileSidebar } from "./sidebar";
 import { useTheme } from "next-themes";
 import { supabase } from "@/lib/supabase/client";
-import type { User } from "@supabase/supabase-js";
+import type { User as SupabaseUser } from "@supabase/supabase-js";
 
 import {
   Search,
@@ -64,7 +64,7 @@ export function Header({ className }: { className?: string }) {
   const router = useRouter();
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = React.useState(false);
-  const [user, setUser] = React.useState<User | null>(null);
+  const [user, setUser] = React.useState<SupabaseUser | null>(null);
   const [loading, setLoading] = React.useState(true);
 
   React.useEffect(() => {
@@ -79,7 +79,7 @@ export function Header({ className }: { className?: string }) {
     getUser();
 
     // 监听认证状态变化
-    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
       setUser(session?.user ?? null);
     });
 

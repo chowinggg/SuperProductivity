@@ -21,7 +21,7 @@ export async function createObjective(input: CreateObjectiveInput) {
   
   const { data, error } = await supabase
     .from("objectives")
-    .insert(input)
+    .insert(input as never)
     .select()
     .single();
 
@@ -41,7 +41,7 @@ export async function updateObjective(id: string, input: UpdateObjectiveInput) {
   
   const { data, error } = await supabase
     .from("objectives")
-    .update(input)
+    .update(input as never)
     .eq("id", id)
     .select()
     .single();
@@ -63,7 +63,7 @@ export async function deleteObjective(id: string) {
   
   const { error } = await supabase
     .from("objectives")
-    .update({ deleted_at: new Date().toISOString() })
+    .update({ deleted_at: new Date().toISOString() } as never)
     .eq("id", id);
 
   if (error) {
@@ -82,7 +82,7 @@ export async function archiveObjective(id: string, isArchived: boolean) {
   
   const { data, error } = await supabase
     .from("objectives")
-    .update({ is_archived: isArchived })
+    .update({ is_archived: isArchived } as never)
     .eq("id", id)
     .select()
     .single();
@@ -108,7 +108,7 @@ export async function reorderObjectives(orderedIds: string[]) {
 
   const { error } = await supabase
     .from("objectives")
-    .upsert(updates);
+    .upsert(updates as never);
 
   if (error) {
     throw new Error(`更新排序失败: ${error.message}`);
@@ -121,7 +121,7 @@ export async function reorderObjectives(orderedIds: string[]) {
 /**
  * 获取所有目标（服务端）
  */
-export async function getObjectives(quarter?: string) {
+export async function getObjectives(quarter?: string): Promise<Objective[]> {
   const supabase = await createClient();
   
   let query = supabase
